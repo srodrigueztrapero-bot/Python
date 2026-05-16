@@ -1,7 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-app = FastAPI()
+router = APIRouter()
 
 # uvicorn users:app --reload
 
@@ -16,7 +16,7 @@ users_list = [User(id=1, name="Rodriguez", surname="Saray", age=38),
               User(id=2, name="martin", surname="moreno", age=25),
               User(id=3, name="mouredev", surname="dev", age=40)]
 
-@app.get("/usersjson")
+@router.get("/usersjson")
 async def usersjson():
     return [{"id": 1, "name": "saray", "surname": "rodriguez", "age": 30}, 
             {"id": 2, "name": "martin", "surname": "moreno", "age": 25},
@@ -25,17 +25,17 @@ async def usersjson():
 
 # path params
 #     
-@app.get("/user/{id}")
+@router.get("/user/{id}")
 async def user(id: int):
     return search_user(id)
 
-@app.get("/user/")
+@router.get("/user/")
 async def users():
     return users_list
     
 # query params
    
-@app.get("/userquery/")
+@router.get("/userquery/")
 async def user(id: int):
     return search_user(id)
 
@@ -47,7 +47,7 @@ def search_user(id: int):
         raise HTTPException(status_code=404, detail="User not found")
 
 
-@app.post("/user/", status_code=201)
+@router.post("/user/", status_code=201)
 async def user(user: User):
     if type(search_user(user.id)) == User:
         raise HTTPException(status_code=404, detail="User already exists")
@@ -57,7 +57,7 @@ async def user(user: User):
         return user  
     
 
-@app.put("/user/")
+@router.put("/user/")
 async def user(user: User):
 
     found = False
@@ -72,7 +72,7 @@ async def user(user: User):
 
     return user
 
-@app.delete("/user/{id}")
+@router.delete("/user/{id}")
 async def user(id: int):
 
     found = False
