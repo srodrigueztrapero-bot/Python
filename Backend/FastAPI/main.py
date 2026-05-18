@@ -9,7 +9,7 @@ app.include_router(products.router)
 app.include_router(users_api.router)
 app.include_router(basic_auth_users.router)
 app.include_router(jwt_auth_users.router)
-app.include_router(users_db.router)
+app.include_router(users_db.router, prefix="/users_db", tags=["users_db"])
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # url http://127.0.0.1:8000
@@ -22,3 +22,5 @@ async def root():
 @app.get("/url")
 async def get_url():
     return {"url_curso": "https://mouredev.com/python"}
+
+ 
